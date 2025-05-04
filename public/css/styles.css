@@ -1,6 +1,305 @@
 /******* Change Box Model ***************/
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap');
+
 *,
 *:before,
 *:after {
   box-sizing: border-box;
 }
+
+main{
+  color: #000;
+  z-index: 1;
+  margin-left: 3%;
+}
+header{
+  margin-right:3%;
+  margin-left: 3%;
+  margin-bottom: 0%;
+}
+
+title{
+  font-size: 20px;
+  color:#50086B;
+}
+nav ul{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  list-style-type: none;
+  margin: 0%;
+  padding: 3%;
+  overflow: hidden;
+  background-color:  #50086B;
+  color: #F9F4FF;
+  font-family: "Source Code Pro", monospace;
+}
+nav{
+  margin-right:3%;
+  margin-left: 3%;
+  margin-bottom: 0%;
+}
+.siteName{
+  font-size: 30px;
+  font-weight: bold;
+  color: #50086B	;
+  font-family: "Raleway", sans-serif;
+  padding-left: 0%;
+
+}
+.siteName a{
+  text-decoration: none;
+}
+.siteName :visited{
+  color: #50086B;
+}
+#tools{
+  font-size: 15px;
+  font-weight: bold;
+  color: #50086B;
+  text-align: right;
+  margin-bottom: 5%;
+
+}
+#tools a{
+  text-decoration: none;
+  color: #000;
+  font-family: "Source Code Pro", monospace;
+}
+h1{
+  text-align: left;
+  font-size: 17px;
+  font-weight: bold;
+  color: #000;
+  font-family: "Raleway", sans-serif;
+}
+#top-header{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 5%;
+  padding-top: 5%;
+}
+#top-header a{
+  text-decoration: none
+}
+.delorean {
+  position: relative;
+  margin: 1rem 0 2rem;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  max-height: 75%;
+  margin-right: 15%;
+  margin-left: 5%;
+}
+.info {
+  position: absolute;
+  left: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding-right: 3%;
+  padding-left: 0%;
+  padding-top: 0%;
+  padding-bottom: 0%;
+  margin-top: 0%;
+  margin-bottom: 0%;
+  max-width: 100%;
+  z-index: 2;
+  color: #50086B;
+  font-family: "Raleway", sans-serif;
+  
+}
+.info h2{
+  font-size: 13px;
+  font-weight: bold;
+  margin-top: 0%;
+  margin-bottom: 0%;
+  padding: 0%;
+}
+.info h3{
+  font-size: 10px;
+  margin-top: 0%;
+  padding: 0%;
+  margin-bottom: 0.5%;
+}
+.delorean img {
+  width: 85%;
+  margin-left: 20%;
+}
+.reviews-list li{
+  margin-bottom: 3%;
+  font-family: "Source Code Pro", monospace;
+  font-size: 9px;
+}
+.reviews{
+  margin-bottom: 8%;
+  margin-left: 0%;
+  margin-right: 0%;
+  padding: 0%;
+}
+.reviews-list{
+  padding: 0%;
+  margin-left: 7%;
+}
+.info button{
+  padding: 6%;
+  margin-top: 2%;
+  background-color: #50086B;
+  color: #fff;
+  font-size: 12px;
+  border: none;
+  font-family: "Source Code Pro", monospace;
+  box-shadow: #595858 0px 0px 3px;
+  
+}
+
+
+.upgrade-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+  margin-left: 6%;
+  margin-right: 3%;
+}
+.upgrade-item img {
+  width: 98%;
+  height: 75px;     /* set a consistent height */
+  object-fit: contain;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
+  background-color: #F9F4FF;
+  border: 2px solid #CCC;
+  box-sizing: border-box;
+  
+}
+.upgrade-item a {
+  margin-top: 0px;
+  font-size: 15px;
+  color: #000;
+  text-align: center;
+}
+.upgrades{
+  display: grid;
+  margin-top: 0%;
+  grid-template-columns: 1fr 1fr;
+  margin-right:5%;
+}
+
+h4{
+  font-family: "Raleway", sans-serif;
+  font-size: 20px;
+  color: #50086B;
+  margin: 3%;
+  
+}
+.copyright{
+  font-family: "Source Code Pro", monospace;
+  font-size: 12px;
+}
+
+
+@media screen and (min-width: 600px) { 
+  body {
+    background-image: url("../images/site/small_check.jpg");
+    margin-left:5%;
+    margin-right:5%;
+    z-index: 0;
+  }
+  #wapper{
+    background-color: #fff;
+    border: 3px solid #50086B;
+    margin-left: 9%;
+    margin-right: 3%;
+    padding: 0%;
+    border-radius: 15px;
+
+    
+
+  }
+  
+  main{
+    margin-left: 0%;
+  }
+  body{
+    margin-left: 0%;
+  }
+  .upper-grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .upgrades-grid{
+    grid-column: 1/2;
+    grid-row: 1/2;
+  }
+  .reviews{
+    grid-column: 2/3;
+  }
+  .reviews-list li{
+    font-size: 12px;
+  }
+  .info h2{
+    font-size: 25px;
+
+  }
+  .info h3{
+    font-size: 15px;
+  }
+  .info{
+    margin-left: 5%;
+  }
+  .info button{
+    margin-top: 10%;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 15px;
+    padding-right: 15%;
+    padding-left: 15%;
+  }
+  #top-header{
+    margin-left: 1%;
+    margin-right: 1%;
+    padding-bottom: 2%;
+  }
+  .copyright{
+    margin-left: 1%;
+    margin-right: 1%;
+  }
+  h1{
+    font-size: 30px;
+    margin-left: 1%;
+    margin-right: 1%;
+  }
+  nav{
+    margin-right: 1%;
+    margin-left: 1%;
+  }
+  nav ul{
+    padding-top: 1%;
+    padding-bottom: 1%;
+    padding-left: 10%;
+    padding-right: 10%;
+  }
+  nav ul li{
+    max-width: 700px;
+  }
+  h4{
+    margin-bottom: 30px;
+  }
+  .upgrade-item {
+    margin-bottom: 20px;
+    
+  }
+  .upgrades{
+    gap: 0px;
+  }
+  .reviews-list li{
+    margin-bottom: 6%;
+  }
+  
+}
+

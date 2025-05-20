@@ -13,6 +13,7 @@ const static = require("./routes/static")
 const baseController = require("./controllers/baseController")
 const inventoryRoute = require("./routes/inventoryRoute")
 const utilities = require("./utilities")
+const inv = require("./models/inventory-model")
 
 
 
@@ -35,12 +36,11 @@ app.use(static)
 app.get("/", function (req, res) {
   res.render("index", {title: "Home"})
 })
-// Inventory routes
-app.use("/inv", inventoryRoute)
 
-app.use(async (req, res, next) => {
-  next({status: 404, message: 'Sorry, we appear to have lost that page.'})
+app.use("/", function (req, res) {
+  res.render("index", {title: "Home"})
 })
+
 
 /* ***********************
 * Express Error Handler
@@ -53,6 +53,17 @@ app.use(async (err, req, res, next) => {
     title: err.status || 'Server Error',
     message: err.message,
     nav
+  })
+})
+
+
+app.use(async (req, res, next) => {
+  let i = await inv.getNav()
+   console.error(`Error at: "${req.originalUrl}": ${err.message}`)
+  res.render("errors/error", {
+    title: err.status || 'Server Error',
+    message: err.message,
+    
   })
 })
 

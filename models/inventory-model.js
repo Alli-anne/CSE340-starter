@@ -32,8 +32,7 @@ async function getCarById(carId) {
     );
     return result.rows[0]; // just return the first row (the car)
   } catch (error) {
-    console.error("Database error getting car by ID:", error);
-    throw error;
+    console.error("Database error getting car by ID:" + error);
   }
 }
 

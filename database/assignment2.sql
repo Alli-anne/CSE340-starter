@@ -6,7 +6,7 @@ UPDATE account
 SET account_type = 'Admin'
 WHERE account_email = 'tony@starkent.com';
 
-DELETE FROM account
+DELETE FROM account.
 WHERE account_email = 'tony@starkent.com';
 
 UPDATE inventory

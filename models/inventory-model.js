@@ -1,5 +1,5 @@
-const pool = require("../database/")
-
+ const pool = require("../database/")
+ 
 /* ***************************
  *  Get all classification data
  * ************************** */
@@ -17,14 +17,29 @@ async function getInventoryByClassificationId(classification_id) {
         JOIN public.classification AS c 
         ON i.classification_id = c.classification_id 
         WHERE i.classification_id = $1`,
-        [classification_id]
+        [classification_id] 
       )
       return data.rows
     } catch (error) {
       console.error("getclassificationsbyid error " + error)
     }
 }
+async function getCarById(carId) {
+  try {
+    const result = await pool.query(
+      "SELECT * FROM inventory WHERE inv_id = $1",
+      [carId]
+    );
+    return result.rows[0]; // just return the first row (the car)
+  } catch (error) {
+    console.error("Database error getting car by ID:", error);
+    throw error;
+  }
+}
+
+
 module.exports = {
-        getClassifications,
-        getInventoryByClassificationId
-      }
+  getClassifications,
+  getInventoryByClassificationId, 
+  getCarById
+}

@@ -41,7 +41,7 @@ nav li a{
   list-style-type: none;
   text-decoration: none;
   margin: 0%;
-  padding: 3%;
+  padding: 0%;
   overflow: hidden;
   background-color:  #50086B;
   color: #F9F4FF;
@@ -145,6 +145,12 @@ h1{
   margin-bottom: 3%;
   font-family: "Source Code Pro", monospace;
   font-size: 9px;
+  display:flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border:none;
+  list-style-type: disc;
 }
 .reviews{
   margin-bottom: 8%;
@@ -156,6 +162,16 @@ h1{
   padding: 0%;
   margin-left: 7%;
 }
+.reviews-list li{
+  margin-bottom: 3%;
+  font-family: "Source Code Pro", monospace;
+  font-size: 9px;
+  display:grid;
+  grid-template-columns: 1fr;
+  border:none;
+  list-style-type: disc;
+}
+.re
 .info button{
   padding: 6%;
   margin-top: 2%;
@@ -215,51 +231,8 @@ h4{
   font-family: "Source Code Pro", monospace;
   font-size: 12px;
 }
-main ul li{
-  list-style-type: none;
-  display: flex;
-  flex-direction: column;
-  border: 1px solid #CCC;
-  margin-bottom: 2%;
-  margin-top: 2%;
-  margin-right: 3%;
-  margin-left: 3%;
-  padding: 0%;
-}
-main ul li a{
-  text-decoration: none;
-  color: #000;
-  font-family: "Source Code Pro", monospace;
-  margin-left: 2%;
-  margin-top: 0%;
-  margin-right: 2%;
-}
-main ul li img {
-  width: 200px;
-  height: 150px;
-  object-fit: cover; /* Crop image to fit box without distortion */
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
 
-main{
-  margin-left: auto;
-  margin-right: auto;
-}
-#inv-display{
-  padding: 0%;
-  margin-left: auto;
-  margin-right: auto;
-}
-main ul{
-  display: grid;
-  grid-template-columns: 1fr
-  ;
-  margin-left: auto;
-  margin-right: auto;
 
-}
 
 
 
@@ -277,18 +250,8 @@ main ul{
     margin-right: 3%;
     padding: 0%;
     border-radius: 15px;
-
-    
-
-  }
-  main ul{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    margin-left: auto;
-    margin-right: auto;
   
   }
-  
   main{
     margin-left: 0%;
   }
@@ -367,6 +330,53 @@ main ul{
   .reviews-list li{
     margin-bottom: 6%;
   }
+  #inv-display{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin-left: auto;
+  margin-right: auto;
+
+}
   
+}
+#inv-display li{
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #CCC;
+  margin-bottom: 2%;
+  margin-top: 2%;
+  margin-right: 3%;
+  margin-left: 3%;
+  padding: 0%;
+}
+#inv-display li a{
+  text-decoration: none;
+  color: #000;
+  font-family: "Source Code Pro", monospace;
+  margin-left: 2%;
+  margin-top: 0%;
+  margin-right: 2%;
+}
+#inv-display li img {
+  width: 200px;
+  height: 150px;
+  object-fit: cover; /* Crop image to fit box without distortion */
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#inv-display{
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#inv-display ul{
+  display: grid;
+  grid-template-columns: 1fr;
+  margin-left: auto;
+  margin-right: auto;
+
 }
 

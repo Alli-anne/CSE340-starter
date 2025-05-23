@@ -1,11 +1,20 @@
 
-<h1><%= car.inv_make %> <%= car.inv_model %></h1>
+<h1 id="info-title"><%= car.inv_make %> <%= car.inv_model %></h1>
 
-<ul>
-  <li>Price: $<%= car.inv_price %></li>
-  <li>Description: <%= car.inv_description %></li>
-  <li>Color: <%= car.inv_color %></li>
-  <li>Miles: <%= car.inv_miles %></li>
-</ul>
-
-<img src="<%= car.inv_image %>" alt="Image of <%= car.inv_make %> <%= car.inv_model %>" />
+<div class="info-grid">
+  <div class="stuff">
+  <div class="info-flex">
+  <h2 class="Description">Price:</h2> <h2 class="database-info">$<%= car.inv_price %></h2>
+  </div>
+  <div class="info-flex">
+  <h2 class="Description">Description:</h2> <h2 class="database-info"><%= car.inv_description %></h2>
+  </div>
+  <div class="info-flex">
+  <h2 class="Description">Color:</h2> <h2 class="database-info"> <%= car.inv_color %></h2>
+  </div>
+  <div class="info-flex">
+  <h2 class="Description">Miles:</h2> <h2 class="database-info"> <%= car.inv_miles %></h2>
+  </div>
+  </div>
+<img class="info-img" src="<%= car.inv_image %>" alt="Image of <%= car.inv_make %> <%= car.inv_model %>" />
+</div>

@@ -3,6 +3,7 @@ const utilities = require("../utilities/")
 
 
 
+
 const invCont = {}
 
 
@@ -21,18 +22,33 @@ invCont.buildByClassificationId = async function (req, res, next) {
     grid,
   })
 }
-invCont.showCarDetails = async function (req, res) {
-  const carId = req.params.carId
-  const car = await invModel.getCarById(carId)
-  const nav = await utilities.getNav()
+invCont.showCarDetails = async function (req, res, next) {
+  try {
+    const carId = req.params.carId
+    const car = await invModel.getCarById(carId)
+    const nav = await utilities.getNav()
 
-  res.render("inventory/info", {
-    title: `${car.inv_make} ${car.inv_model}`,
-    nav,
-    car,
-  })
+    if (!car) {
+      // Send error to centralized error handler
+      return next({
+        status: 500,
+        message: "Sorry, we couldn't find the vehicle you're looking for.",
+      })
+    }
+
+    res.render("inventory/info", {
+      title: `${car.inv_make} ${car.inv_model}`,
+      nav,
+      car,
+    })
+  } catch (err) {
+    next(err) // Catch and send unexpected errors to the handler
+  }
 }
 
+invCont.showError = function (req, res, next) {
+  throw new Error("This is an error")
+}
 
 
 module.exports = invCont

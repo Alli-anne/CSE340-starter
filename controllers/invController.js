@@ -46,6 +46,7 @@ invCont.showCarDetails = async function (req, res, next) {
   }
 }
 
+
 invCont.showError = function (req, res, next) {
   throw new Error("This is an error")
 }

@@ -4,7 +4,9 @@
 <div class="info-grid">
   <div class="stuff">
   <div class="info-flex">
-  <h2 class="Description">Price:</h2> <h2 class="database-info">$<%= car.inv_price %></h2>
+  <h2 class="Description">Price:</h2> <h2 class="database-info">
+  $<%= Number(car.inv_price).toLocaleString('en-US', { minimumFractionDigits: 2 }) %>
+</h2>
   </div>
   <div class="info-flex">
   <h2 class="Description">Description:</h2> <h2 class="database-info"><%= car.inv_description %></h2>
@@ -13,7 +15,9 @@
   <h2 class="Description">Color:</h2> <h2 class="database-info"> <%= car.inv_color %></h2>
   </div>
   <div class="info-flex">
-  <h2 class="Description">Miles:</h2> <h2 class="database-info"> <%= car.inv_miles %></h2>
+  <h2 class="Description">Miles:</h2> <h2 class="database-info">
+  <%= Number(car.inv_miles).toLocaleString('en-US') %> miles
+</h2>
   </div>
   </div>
 <img class="info-img" src="<%= car.inv_image %>" alt="Image of <%= car.inv_make %> <%= car.inv_model %>" />

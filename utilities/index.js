@@ -58,4 +58,33 @@ Util.buildClassificationGrid = async function(data){
     return grid
   }
 
+Util.buildCarDetail = function(car) {
+  let detailHTML = '';
+
+  detailHTML += `<h1 id="info-title">${car.inv_make} ${car.inv_model}</h1>`;
+  detailHTML += `<div class="info-grid">`;
+
+  detailHTML += `<img class="info-img" src="${car.inv_image}" alt="${car.inv_make} ${car.inv_model}" />`;
+
+  detailHTML += `<div class="stuff">`;
+
+  detailHTML += `<div class="info-flex"><h2 class="Description">Price:</h2>`;
+  detailHTML += `<h2 class="database-info">$${new Intl.NumberFormat('en-US').format(car.inv_price)}</h2></div>`;
+
+  detailHTML += `<div class="info-flex"><h2 class="Description">Description:</h2>`;
+  detailHTML += `<h2 class="database-info">${car.inv_description}</h2></div>`;
+
+  detailHTML += `<div class="info-flex"><h2 class="Description">Color:</h2>`;
+  detailHTML += `<h2 class="database-info">${car.inv_color}</h2></div>`;
+
+  detailHTML += `<div class="info-flex"><h2 class="Description">Miles:</h2>`;
+  detailHTML += `<h2 class="database-info">${new Intl.NumberFormat('en-US').format(car.inv_miles)} miles</h2></div>`;
+
+  detailHTML += `</div></div>`;
+
+  return detailHTML;
+};
+
+
+
 module.exports = Util

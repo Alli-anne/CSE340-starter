@@ -33,6 +33,8 @@ app.use(static)
  *************************/
 app.get("/", baseController.buildHome)
 app.use("/inv", inventoryRoute)
+app.get('/favicon.ico', (req, res) => res.status(204).end());
+
 
 /* ***********************
  * 404 Handler
@@ -53,6 +55,7 @@ app.use(async (err, req, res, next) => {
     nav
   })
 })
+
 
 /* *********************** 
  * Local Server Information

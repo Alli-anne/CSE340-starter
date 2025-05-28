@@ -1,6 +1,7 @@
 const invModel = require("../models/inventory-model")
 const Util = {}
 
+
 /* ************************
  * Constructs the nav HTML unordered list
  ************************** */
@@ -85,6 +86,15 @@ Util.buildCarDetail = function(car) {
   return detailHTML;
 };
 
+function handleErrors(fn) {
+  return function (req, res, next) {
+    Promise.resolve(fn(req, res, next)).catch(next);
+  };
+}
 
-
-module.exports = Util
+module.exports = {
+  handleErrors,
+  getNav: Util.getNav,
+  buildClassificationGrid: Util.buildClassificationGrid,
+  buildCarDetail: Util.buildCarDetail
+}

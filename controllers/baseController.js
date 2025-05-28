@@ -4,7 +4,9 @@ const baseController = {}
 baseController.buildHome = async function (req, res) {
   // Get the navigation list dynamically
   const nav = await utilities.getNav()
+  req.flash("notice", "This is a flash message.")
   res.render("index", { title: "Home", nav })
 }
+
 
 module.exports = baseController

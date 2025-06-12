@@ -6,19 +6,20 @@
 /* ***********************
  * Require Statements
  *************************/
-const express = require("express")
-const expressLayouts = require("express-ejs-layouts")
-const env = require("dotenv").config()
-const app = express()
-const static = require("./routes/static")
-const baseController = require("./controllers/baseController")
-const inventoryRoute = require("./routes/inventoryRoute")
-const utilities = require("./utilities")
-const inv = require("./models/inventory-model")
-const session = require("express-session")
-const pool = require('./database/')
-const accountRoute = require("./routes/accountRoute")
-const bodyParser = require("body-parser")
+const express = require("express");
+const expressLayouts = require("express-ejs-layouts");
+const env = require("dotenv").config();
+const app = express();
+const static = require("./routes/static");
+const baseController = require("./controllers/baseController");
+const inventoryRoute = require("./routes/inventoryRoute");
+const utilities = require("./utilities");
+const inv = require("./models/inventory-model");
+const session = require("express-session");
+const pool = require('./database/');
+const accountRoute = require("./routes/accountRoute");
+const bodyParser = require("body-parser");
+const invRoute = require("./routes/inventoryRoute")
 
 
 
@@ -58,6 +59,8 @@ app.use(expressLayouts)
 app.set("layout", "./layouts/layout") // not at views root
 app.use("/account", accountRoute)
 
+
+
 /* ***********************
  * Static Files
  *************************/
@@ -66,9 +69,10 @@ app.use(static)
 /* ***********************
  * Routes
  *************************/
+
 app.get("/", baseController.buildHome)
 app.use("/inv", inventoryRoute)
-
+app.use("/add-inventory", invRoute)
 app.get('/favicon.ico', (req, res) => res.status(204).end());
 
 

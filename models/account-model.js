@@ -25,6 +25,11 @@ async function checkExistingEmail(account_email){
   }
 }
 
+/* **********************
+ *   Check for existing email
+ * ********************* */
+
 module.exports = {
-  registerAccount
+  registerAccount,
+  checkExistingEmail,
 }

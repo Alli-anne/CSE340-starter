@@ -374,6 +374,245 @@ footer a{
 footer{
   padding:3%;
 }
+#registrationForm{
+  margin-left: auto;
+  margin-right: auto;
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  justify-items: center;
+align-items:normal;
+  max-width: 500px;
+  background-color:#F9F4FF;
+ 
+  padding: 3%;
+  border-radius: 10px;  
+}
+#registrationForm input{
+  margin-bottom: 2%;
+  margin-top: 2%;
+  padding: 2%;
+  font-family: "Source Code Pro", monospace;
+  border-radius: 10px;  
+}
+
+#registrationForm button{
+  padding: 3%;
+  margin-top: 2%;
+  background-color: #50086B;
+  color: #fff;
+  font-size: 12px;
+  border: none;
+  font-family: "Source Code Pro", monospace;
+  box-shadow: #595858 0px 0px 3px;
+  
+}
+#registrationForm label{
+  font-family: "Source Code Pro", monospace;
+}
+#loginForm {
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: normal;
+  max-width: 500px;
+  background-color: #F9F4FF;
+  padding: 3%;
+  border-radius: 10px;
+}
+
+#loginForm input {
+  margin-bottom: 2%;
+  margin-top: 2%;
+  padding: 2%;
+  font-family: "Source Code Pro", monospace;
+  border-radius: 10px;
+}
+
+#loginForm button {
+  padding: 3%;
+  margin-top: 2%;
+  background-color: #50086B;
+  color: #fff;
+  font-size: 12px;
+  border: none;
+  font-family: "Source Code Pro", monospace;
+  box-shadow: #595858 0px 0px 3px;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: background-color 0.3s ease;
+}
+
+#loginForm button:hover {
+  background-color: #6a148d;
+}
+
+#loginForm label {
+  font-family: "Source Code Pro", monospace;
+}
+
+/* Optional: Style for the flash notice */
+.notice {
+  max-width: 500px;
+  margin: 0 auto 20px auto;
+  background-color: #fff3cd;
+  color: #856404;
+  border-radius: 8px;
+  padding: 10px 20px;
+  list-style: none;
+  font-family: "Source Code Pro", monospace;
+  box-shadow: 0 0 4px #ccc;
+}
+.notice li {
+  margin: 5px 0;
+}
+#addInventoryForm {
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: normal;
+  max-width: 500px;
+  background-color: #F9F4FF;
+  padding: 3%;
+  border-radius: 10px;
+}
+
+#addInventoryForm input,
+#addInventoryForm textarea,
+#addInventoryForm select {
+  margin-bottom: 2%;
+  margin-top: 2%;
+  padding: 2%;
+  font-family: "Source Code Pro", monospace;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+
+#addInventoryForm button {
+  padding: 3%;
+  margin-top: 2%;
+  background-color: #50086B;
+  color: #fff;
+  font-size: 12px;
+  border: none;
+  font-family: "Source Code Pro", monospace;
+  box-shadow: #595858 0px 0px 3px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+#addInventoryForm label {
+  font-family: "Source Code Pro", monospace;
+  margin-top: 1%;
+}
+#addClassificationForm {
+  margin: 0 auto;
+  max-width: 500px;
+  background-color: #F9F4FF;
+  padding: 3%;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  font-family: "Source Code Pro", monospace;
+}
+
+#addClassificationForm label {
+  margin-top: 2%;
+  margin-bottom: 0.5%;
+}
+
+#addClassificationForm input {
+  padding: 2%;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  margin-bottom: 2%;
+  font-family: "Source Code Pro", monospace;
+}
+
+#addClassificationForm button {
+  padding: 3%;
+  margin-top: 2%;
+  background-color: #50086B;
+  color: #fff;
+  font-size: 12px;
+  border: none;
+  font-family: "Source Code Pro", monospace;
+  box-shadow: #595858 0px 0px 3px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+#addClassificationForm {
+  margin: 0 auto;
+  max-width: 500px;
+  background-color: #F9F4FF;
+  padding: 3%;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  font-family: "Source Code Pro", monospace;
+}
+
+#addClassificationForm label {
+  margin-top: 2%;
+  margin-bottom: 0.5%;
+}
+
+#addClassificationForm input {
+  padding: 2%;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  margin-bottom: 2%;
+  font-family: "Source Code Pro", monospace;
+}
+
+#addClassificationForm button {
+  padding: 3%;
+  margin-top: 2%;
+  background-color: #50086B;
+  color: #fff;
+  font-size: 12px;
+  border: none;
+  font-family: "Source Code Pro", monospace;
+  box-shadow: #595858 0px 0px 3px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.notice {
+  background-color: #ffe0e0;
+  color: #a10000;
+  padding: 1em;
+  margin-bottom: 1em;
+  border-radius: 8px;
+  font-family: "Source Code Pro", monospace;
+  list-style: none;
+}
+
+.action-links {
+  margin-top: 20px;
+  display: flex;
+  gap: 1rem;
+}
+
+.action-links a {
+  background-color: #50086B;
+  color: #fff;
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-family: "Source Code Pro", monospace;
+  text-decoration: none;
+  font-size: 14px;
+  box-shadow: #595858 0px 0px 3px;
+  transition: background-color 0.2s ease;
+}
+
+.action-links a:hover {
+  background-color: #6a2290;
+}
+
 
 @media screen and (min-width: 600px) { 
   .info-grid{

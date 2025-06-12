@@ -1,0 +1,52 @@
+<h1><%= title %></h1>
+<% if (messages.success && messages.success.length > 0) { %>
+  <div class="alert alert-success">
+    <% messages.success.forEach(msg => { %>
+      <p><%= msg %></p>
+    <% }) %>
+  </div>
+<% } %>
+
+<% if (messages.error && messages.error.length > 0) { %>
+  <div class="alert alert-danger">
+    <% messages.error.forEach(msg => { %>
+      <p><%= msg %></p>
+    <% }) %>
+  </div>
+<% } %>
+
+
+<form action="/inv/add-inventory" method="POST" id="addInventoryForm">
+
+  <label for="inv_make">Make</label>
+  <input type="text" name="inv_make" id="inv_make" value="<%= inv_make || '' %>" required>
+
+  <label for="inv_model">Model</label>
+  <input type="text" name="inv_model" id="inv_model" value="<%= inv_model || '' %>" required>
+
+  <label for="inv_year">Year</label>
+  <input type="text" name="inv_year" id="inv_year" title="Enter a 4-digit year" value="<%= inv_year  || ''%>" required>
+
+  <label for="inv_description">Description</label>
+  <textarea name="inv_description" id="inv_description" required><% inv_description || ''%></textarea>
+
+  <label for="inv_image">Image Path (or leave blank for default)</label>
+  <input type="text" name="inv_image" id="inv_image" value="<% inv_image || '' %>" placeholder="/images/vehicles/no-image.png">
+
+  <label for="inv_thumbnail">Thumbnail Path (or leave blank for default)</label>
+  <input type="text" name="inv_thumbnail" id="inv_thumbnail" value="<%= inv_thumbnail || ''%>" placeholder="/images/vehicles/no-image-tn.png">
+
+  <label for="inv_price">Price</label>
+  <input type="number" name="inv_price" id="inv_price" value="<%= locals.inv_price %>" required>
+
+  <label for="inv_miles">Miles</label>
+  <input type="number" name="inv_miles" id="inv_miles" value="<%= typeof inv_miles != 'undefined' ? inv_miles : '' %>" required>
+
+  <label for="inv_color">Color</label>
+  <input type="text" name="inv_color" id="inv_color" value="<%= typeof inv_color != 'undefined' ? inv_color : '' %>" required>
+
+  <!-- Classification dropdown -->
+  <%- classificationList %>
+
+  <button type="submit">Add Inventory</button>
+</form>

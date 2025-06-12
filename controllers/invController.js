@@ -1,5 +1,5 @@
 const invModel = require("../models/inventory-model")
-
+const utilities = require("../utilities/")
 const invCont = {}
 
 /* ************************
@@ -126,9 +126,125 @@ invCont.showCarDetails = async function (req, res, next) {
     next(err)
   }
 }
+invCont.buildManagement = async (req, res, next) => {
+  try {
+    const nav = await invCont.getNav() // 👈 make sure this is here
+    res.render("inventory/management", {
+      title: "Inventory Management", // 👈 pass it to the view
+      flashMessage: req.flash("message"),
+      nav
+    })
+  } catch (error) {
+    next(error);
+  };
+};
+// invCont.buildAddClassification = async (req, res, next) => {
+//   let nav = await utilities.getNav()
+//   const {name, description} = req.body
+//   const regResult = await accountModel.registerAccount(
+//       name, 
+//       description
+//     )
 
-invCont.showError = function (req, res, next) {
-  throw new Error("This is an error")
+//     if (regResult) {
+//       res.redirect("/inv/management")
+//     }
+// }
+invCont.showError = async function(req, res, next) {
+  // Your error handling or error page rendering logic here
+  res.render('error-view', { title: "Error" });
+};
+invCont.addClassificationToDB = async (req, res, next) => {
+  try {
+    const classificationName = req.body.classification_name;
+
+    if (!classificationName || classificationName.trim() === "") {
+      req.flash("error", "Please provide a classification name.");
+      return res.redirect("/inv/addclassification");
+    }
+
+    const result = await invModel.addClassification(classificationName);
+
+    if (result.rowCount === 1) {
+      req.flash("success", `${classificationName} classification added successfully.`);
+      return res.redirect("/inv/management"); // redirect after success
+    } else {
+      req.flash("error", "Failed to add classification.");
+      return res.redirect("/inv/addclassification");
+    }
+  } catch (error) {
+    return next(error);
+  }
+};
+invCont.addInventoryToDB = async (req, res, next) => {
+  try {
+    const {
+      inv_make,
+      inv_model,
+      inv_year,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_miles,
+      inv_color,
+      classification_id,
+    } = req.body;
+
+   const result = await invModel.addInventory(
+  inv_make, inv_model, inv_year, inv_description,
+  inv_image, inv_thumbnail, inv_price,
+  inv_miles, inv_color, classification_id
+);
+
+    if (result.rowCount === 1) {
+      req.flash("success", "Inventory added successfully.");
+      return res.redirect("/inv"); // redirect after success
+    } else {
+      req.flash("error", "Failed to add inventory.");
+      return res.redirect("/inv/add-inventory");
+    }
+    console.log('Add inventory result:', result);
+console.log('Row count:', result.rowCount);
+  } catch (error) {
+    return next(error);
+  }
+};
+invCont.addClassification = async (req, res, next) => {
+  let nav = await invCont.getNav()
+  res.render("inventory/add-classification", {
+    title: "Add Classification",
+    nav,
+  })
 }
+invCont.buildAddInventory = async function (req, res) {
+  const nav = await invCont.getNav()
+  const classificationList = await utilities.buildClassificationList()
+   
+  res.render("inventory/add-inventory", {
+    title: "Add Inventory",
+    classificationList, 
+    nav, 
+    messages: {
+    success: req.flash("success"),
+    error: req.flash("error")
+  },
+    inv_make: "",
+      inv_model: "",
+      inv_year: "",
+      inv_description: "",
+      inv_image: "",
+      inv_thumbnail: "",
+      inv_price: "",
+      inv_miles: "",
+      inv_color: "",
+      classification_id: ""
+    }),
+  console.log('Flash success:', req.flash("success"));
+console.log('Flash error:', req.flash("error"));
+    
+
+}
+
 
 module.exports = invCont

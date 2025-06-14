@@ -3,6 +3,8 @@ const express = require("express")
 const router = new express.Router()
 const invController = require("../controllers/invController");
 const utilities = require("../utilities");
+const { inventoryRules, checkInventoryData, handleErrors } = utilities;
+
 
 
 
@@ -14,6 +16,11 @@ router.get("/addclassification", utilities.handleErrors(invController.addClassif
 router.get("/add-inventory",  utilities.handleErrors(invController.buildAddInventory))
 
 router.post('/addclassification', utilities.handleErrors(invController.addClassificationToDB));
-router.post('/add-inventory', utilities.handleErrors(invController.addInventoryToDB));
+router.post(
+  "/add-inventory",
+  inventoryRules,
+  checkInventoryData,
+  handleErrors(invController.addInventory)
+);
 
 module.exports = router

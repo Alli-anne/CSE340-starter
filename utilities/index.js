@@ -1,4 +1,5 @@
 const invModel = require("../models/inventory-model")
+const { body, validationResult } = require("express-validator")
 const Util = {}
 
 
@@ -109,11 +110,65 @@ function handleErrors(fn) {
     Promise.resolve(fn(req, res, next)).catch(next);
   };
 }
+const inventoryRules = [
+  body("inv_make").trim().notEmpty().withMessage("Make is required."),
+  body("inv_model").trim().notEmpty().withMessage("Model is required."),
+  body("inv_year")
+    .isInt({ min: 1900, max: new Date().getFullYear() + 1 })
+    .withMessage("Year must be a valid 4-digit number."),
+  body("inv_price").isFloat({ min: 0 }).withMessage("Price must be a positive number."),
+  body("inv_miles").isFloat({ min: 0 }).withMessage("Miles must be a positive number."),
+  body("inv_color").trim().notEmpty().withMessage("Color is required."),
+]
+// Check and return errors
+const checkInventoryData = async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const nav = await Util.getNav();
+    const classificationList = await Util.buildClassificationList(req.body.classification_id);
+
+    // Extract values from req.body to repopulate the form
+    const {
+      inv_make,
+      inv_model,
+      inv_year,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_miles,
+      inv_color,
+      classification_id,
+    } = req.body;
+
+    return res.render("inventory/add-inventory", {
+      title: "Add Inventory",
+      nav,
+      errors: errors.array(),
+      inv_make,
+      inv_model,
+      inv_year,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_miles,
+      inv_color,
+      classification_list: classificationList,
+      classification_id,  // if you want to explicitly pass it
+    });
+  }
+  next();
+};
+
 
 module.exports = {
   handleErrors,
   getNav: Util.getNav,
   buildClassificationList: Util.buildClassificationList,
   buildClassificationGrid: Util.buildClassificationGrid,
-  buildCarDetail: Util.buildCarDetail
+  buildCarDetail: Util.buildCarDetail,
+  inventoryRules,
+  checkInventoryData
+
 }

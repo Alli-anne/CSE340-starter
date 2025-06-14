@@ -1,8 +1,16 @@
 <h1><%= title %></h1>
 
 <% if (messages.success && messages.success.length > 0) { %>
-  <div class="alert alert-success">
+  <div class="alert alert-success notice">
     <% messages.success.forEach(msg => { %>
+      <p><%= msg %></p>
+    <% }) %>
+  </div>
+<% } %>
+
+<% if (messages.error && messages.error.length > 0) { %>
+  <div class="alert alert-danger notice">
+    <% messages.error.forEach(msg => { %>
       <p><%= msg %></p>
     <% }) %>
   </div>

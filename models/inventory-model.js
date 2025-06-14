@@ -49,6 +49,7 @@ async function addClassification(classificationName) {
   }
 }
 
+
 async function addInventory(
   inv_make,
   inv_model,
@@ -80,7 +81,7 @@ async function addInventory(
       inv_color,
       classification_id
     ])
-    return data.rows[0] // return the inserted row
+    return data // return the inserted row
   } catch (error) {
     console.error("Insert failed:", error)
     throw error

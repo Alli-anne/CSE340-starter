@@ -589,11 +589,13 @@ align-items:normal;
   border-radius: 8px;
   font-family: "Source Code Pro", monospace;
   list-style: none;
+  justify-content: center;
 }
 
 .action-links {
   margin-top: 20px;
   display: flex;
+  justify-content: center;
   gap: 1rem;
 }
 

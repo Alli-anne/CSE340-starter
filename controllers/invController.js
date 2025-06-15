@@ -191,25 +191,27 @@ invCont.addInventoryToDB = async (req, res, next) => {
       classification_id,
     } = req.body;
 
-   const result = await invModel.addInventory(
-  inv_make, inv_model, inv_year, inv_description,
-  inv_image, inv_thumbnail, inv_price,
-  inv_miles, inv_color, classification_id
-);
+    const result = await invModel.addInventory(
+      inv_make, inv_model, inv_year, inv_description,
+      inv_image, inv_thumbnail, inv_price,
+      inv_miles, inv_color, classification_id
+    );
 
     if (result.rowCount === 1) {
       req.flash("success", "Inventory added successfully.");
-      return res.redirect("/inv"); // redirect after success
+      return res.redirect("/inv");
     } else {
       req.flash("error", "Failed to add inventory.");
       return res.redirect("/inv/add-inventory");
     }
-    console.log('Add inventory result:', result);
-console.log('Row count:', result.rowCount);
+
   } catch (error) {
-    return next(error);
+    console.error("Error in addInventoryToDB:", error);
+    req.flash("error", "There was a problem adding the inventory item.");
+    return res.redirect("/inv/add-inventory");
   }
 };
+
 
 invCont.addClassification = async (req, res, next) => {
   let nav = await invCont.getNav()
@@ -219,33 +221,35 @@ invCont.addClassification = async (req, res, next) => {
   })
 }
 invCont.buildAddInventory = async function (req, res) {
-  const nav = await invCont.getNav()
-  const classificationList = await utilities.buildClassificationList()
-   
-  res.render("inventory/add-inventory", {
-    title: "Add Inventory",
-    classificationList, 
-    nav, 
-    messages: {
-    success: req.flash("success"),
-    error: req.flash("error")
-  },
-    inv_make: req.body?.inv_make || "",
-inv_model: req.body?.inv_model || "",
-inv_year: req.body?.inv_year || "",
-inv_description: req.body?.inv_description || "",
-inv_image: req.body?.inv_image || "",
-inv_thumbnail: req.body?.inv_thumbnail || "",
-inv_price: req.body?.inv_price || "",
-inv_miles: req.body?.inv_miles || "",
-inv_color: req.body?.inv_color || "",
-classification_id: req.body?.classification_id || ""
-    }),
-  console.log('Flash success:', req.flash("success"));
-console.log('Flash error:', req.flash("error"));
+  try {
+    const nav = await utilities.getNav()
+    const classificationList = await utilities.buildClassificationList()
+    
+    res.render("inventory/add-inventory", {
+      title: "Add Inventory",
+      classificationList,
+      nav,
+      errors: [], 
+
+      inv_make: req.body?.inv_make || "",
+      inv_model: req.body?.inv_model || "",
+      inv_year: req.body?.inv_year || "",
+      inv_description: req.body?.inv_description || "",
+      inv_image: req.body?.inv_image || "",
+      inv_thumbnail: req.body?.inv_thumbnail || "",
+      inv_price: req.body?.inv_price || "",
+      inv_miles: req.body?.inv_miles || "",
+      inv_color: req.body?.inv_color || "",
+      classification_id: req.body?.classification_id || "",
+    })
+  } catch (error) {
+    console.error("Error rendering Add Inventory page:", error)
+    res.status(500).send("Server error")
+  }
+}
+
     
 
-}
 invCont.addInventory= async function(req, res) {
   const errors = validationResult(req);
   
@@ -272,7 +276,7 @@ if (!errors.isEmpty()) {
   return;
 }
 
-  if (!errors.isEmpty()) {
+   {
     const nav = await utilities.getNav();
     const classificationList = await utilities.buildClassificationList(req.body.classification_id);
     return res.status(400).render("inventory/add-inventory", {

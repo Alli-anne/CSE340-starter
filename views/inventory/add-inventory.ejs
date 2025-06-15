@@ -7,13 +7,16 @@
   </div>
 <% } %>
 
-<% if (messages.error && messages.error.length > 0) { %>
-  <div class="alert alert-danger">
-    <% messages.error.forEach(msg => { %>
-      <p><%= msg %></p>
+
+<% if (errors && errors.length > 0) { %>
+  <ul class="notice">
+    <% errors.forEach(error => { %>
+      <li><%= error.msg %></li>
     <% }) %>
-  </div>
+  </ul>
 <% } %>
+
+
 
 
 <form action="/inv/add-inventory" method="POST" id="addInventoryForm">
@@ -45,7 +48,7 @@
   <label for="inv_color">Color</label>
   <input type="text" name="inv_color" id="inv_color" value="<%= inv_color || '' %>" required>
 
-  <!-- Classification dropdown -->
+ <label for="classification">Classification</label>
   <%- classificationList %>
 
   <button type="submit">Add Inventory</button>

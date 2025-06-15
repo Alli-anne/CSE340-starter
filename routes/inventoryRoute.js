@@ -4,6 +4,7 @@ const router = new express.Router()
 const invController = require("../controllers/invController");
 const utilities = require("../utilities");
 const { inventoryRules, inventoryValidation, handleErrors } = utilities;
+const regValidate = require('../utilities/index');
 
 
 

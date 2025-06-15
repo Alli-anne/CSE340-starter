@@ -141,13 +141,13 @@ Util.inventoryValidation = async function(req, res, next) {
     classification_id
   } = req.body
 
-  const errors = validationResult(req)
+  let errors = validationResult(req)
   if (!errors.isEmpty()) {
     const nav = await Util.getNav()
     const classificationList = await Util.buildClassificationList(classification_id)
 
     res.render("inventory/add-inventory", {
-      errors,
+      errors: errors.array(),
       title: "Add Inventory",
       nav,
       inv_make,
@@ -167,14 +167,9 @@ Util.inventoryValidation = async function(req, res, next) {
 
   next()
 }
-Util.inventoryValidation = (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    // handle errors
-    return res.status(400).json({ errors: errors.array() });
-  }
-  next();
-};
+
+
+
 
 
 module.exports = {

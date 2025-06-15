@@ -47,9 +47,8 @@
 
   <label for="inv_color">Color</label>
   <input type="text" name="inv_color" id="inv_color" value="<%= inv_color || '' %>" required>
-
- <label for="classification">Classification</label>
-  <%- classificationList %>
-
-  <button type="submit">Add Inventory</button>
-</form>
+  
+<label for="classification_id">Classification <span class="required">*</span></label>
+  <select id="classification_id" name="classification_id" required>
+    <%- classificationList %>
+  </select>

@@ -20,6 +20,8 @@ const pool = require('./database/');
 const accountRoute = require("./routes/accountRoute");
 const bodyParser = require("body-parser");
 const invRoute = require("./routes/inventoryRoute")
+require('dotenv').config();
+
 
 
 

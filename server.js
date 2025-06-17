@@ -20,6 +20,9 @@ const pool = require('./database/');
 const accountRoute = require("./routes/accountRoute");
 const bodyParser = require("body-parser");
 const invRoute = require("./routes/inventoryRoute")
+const cookieParser = require("cookie-parser");
+const accountValidation = require("./utilities/account-validation");
+
 require('dotenv').config();
 
 
@@ -40,6 +43,7 @@ require('dotenv').config();
   name: 'sessionId',
 }))
 
+
 // Express Messages Middleware
 
 app.use(require('connect-flash')())
@@ -49,17 +53,20 @@ app.use(function(req, res, next){
 })
 
 
+
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
 /* ***********************
  * View Engine and Templates
  *************************/
-
+app.use(cookieParser());
+app.use(utilities.checkJWTToken); 
 app.set("view engine", "ejs")
 app.use(expressLayouts)
 app.set("layout", "./layouts/layout") // not at views root
 app.use("/account", accountRoute)
+
 
 
 
@@ -101,6 +108,7 @@ app.use(async (err, req, res, next) => {
     nav
   })
 })
+
 
 
 

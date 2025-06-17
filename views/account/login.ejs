@@ -11,14 +11,13 @@
 
 <form id="loginForm" action="/account/login" method="post">
   <label for="email">Email:</label>
-  <input 
-    type="email" 
-    id="email" 
-    name="email" 
-    value="<%= typeof email !== 'undefined' ? email : '' %>" 
-    required 
-  />
-
+<input 
+  type="email" 
+  id="account_email" 
+  name="account_email" 
+  value="<%= typeof account_email !== 'undefined' ? account_email : '' %>" 
+  required 
+/>
   <label for="account_password">Password:</label>
   <input 
     type="password" 

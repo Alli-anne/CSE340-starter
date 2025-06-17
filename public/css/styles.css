@@ -614,6 +614,45 @@ align-items:normal;
 .action-links a:hover {
   background-color: #6a2290;
 }
+table#inventoryDisplay {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: white;
+    box-shadow: 0 0 8px rgba(0,0,0,0.05);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  table#inventoryDisplay th,
+  table#inventoryDisplay td {
+    padding: 15px;
+    border-bottom: 1px solid #e2e8f0;
+    text-align: left;
+  }
+
+  table#inventoryDisplay th {
+    background-color: #e9f0f7;
+    color: #2a3d66;
+    font-size: 16px;
+  }
+
+  table#inventoryDisplay a {
+    color: #4a90e2;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  table#inventoryDisplay a:hover {
+    text-decoration: underline;
+  }
+
+  noscript {
+    color: red;
+    font-weight: bold;
+    margin-top: 20px;
+    display: block;
+  }
 
 
 @media screen and (min-width: 600px) { 

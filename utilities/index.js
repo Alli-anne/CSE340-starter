@@ -1,6 +1,8 @@
 const invModel = require("../models/inventory-model")
-const { body, validationResult} = require("express-validator")
+const { body, validationResult, check} = require("express-validator")
 const Util = {}
+const jwt = require("jsonwebtoken");
+
 
 
 /* ************************
@@ -168,7 +170,39 @@ Util.inventoryValidation = async function(req, res, next) {
   next()
 }
 
-
+/* ****************************************
+ *  Check Login
+ * ************************************ */
+Util.checkLogin = (req, res, next) => {
+  if (res.locals.loggedin) {
+    next(); // User is logged in, continue
+  } else {
+    req.flash("notice", "Please log in."); // Create flash message
+    return res.redirect("/account/login"); // Redirect to login
+  }
+};
+Util.checkJWTToken = (req, res, next) => {
+  const token = req.cookies.jwt;
+  if (token) {
+    jwt.verify(
+      token,
+      process.env.ACCESS_TOKEN_SECRET,
+      function (err, decoded) {
+        if (err) {
+          res.locals.loggedin = false;
+          next();
+        } else {
+          res.locals.loggedin = true;
+          res.locals.accountData = decoded;
+          next();
+        }
+      }
+    );
+  } else {
+    res.locals.loggedin = false;
+    next();
+  }
+};
 
 
 
@@ -180,5 +214,7 @@ module.exports = {
   buildCarDetail: Util.buildCarDetail,
   inventoryRules: Util.inventoryRules,    // <-- add `Util.` here
   inventoryValidation: Util.inventoryValidation,
+  checkLogin: Util.checkLogin,
+  checkJWTToken: Util.checkJWTToken
 };
 

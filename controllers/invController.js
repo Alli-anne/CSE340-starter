@@ -128,11 +128,13 @@ invCont.showCarDetails = async function (req, res, next) {
 }
 invCont.buildManagement = async (req, res, next) => {
   try {
-    const nav = await invCont.getNav() // 👈 make sure this is here
+    const nav = await invCont.getNav() 
+   const classificationSelect = await utilities.buildClassificationList()
     res.render("inventory/management", {
       title: "Inventory Management", // 👈 pass it to the view
       flashMessage: req.flash("message"),
-      nav
+      nav, 
+      classificationSelect
     })
   } catch (error) {
     next(error);
@@ -250,96 +252,125 @@ invCont.buildAddInventory = async function (req, res) {
 
     
 
-invCont.addInventory= async function(req, res) {
+invCont.addInventory = async function (req, res) {
   const errors = validationResult(req);
-  
-if (!errors.isEmpty()) {
-  const nav = await utilities.getNav();
-  const classificationList = await utilities.buildClassificationList(req.body.classification_id);
 
-  res.render("inventory/add-inventory", {
-    title: "Add Inventory",
-    nav,
-    classificationList,
-    errors: errors.array(),
-    // Pass the form fields back to the template for repopulating inputs
-    inv_make: req.body.inv_make,
-    inv_model: req.body.inv_model,
-    inv_year: req.body.inv_year,
-    inv_description: req.body.inv_description,
-    inv_image: req.body.inv_image,
-    inv_thumbnail: req.body.inv_thumbnail,
-    inv_price: req.body.inv_price,
-    inv_miles: req.body.inv_miles,
-    inv_color: req.body.inv_color,
-  });
-  return;
-}
+  // Destructure from req.body once
+  let {
+    inv_make,
+    inv_model,
+    inv_year,
+    inv_description,
+    inv_image,
+    inv_thumbnail,
+    inv_price,
+    inv_miles,
+    inv_color,
+    classification_id
+  } = req.body;
 
-   {
+  // Set default images if blank
+  const defaultImage = "/images/vehicles/no-image.png";
+  const defaultThumbnail = "/images/vehicles/no-image-tn.png";
+
+  if (!inv_image || inv_image.trim() === "") {
+    inv_image = defaultImage;
+  }
+
+  if (!inv_thumbnail || inv_thumbnail.trim() === "") {
+    inv_thumbnail = defaultThumbnail;
+  }
+
+  // Trim text fields
+  inv_make = inv_make?.trim();
+  inv_model = inv_model?.trim();
+  inv_description = inv_description?.trim();
+  inv_color = inv_color?.trim();
+
+  // If errors exist, re-render form
+  if (!errors.isEmpty()) {
     const nav = await utilities.getNav();
-    const classificationList = await utilities.buildClassificationList(req.body.classification_id);
+    const classificationList = await utilities.buildClassificationList(classification_id);
+
     return res.status(400).render("inventory/add-inventory", {
       title: "Add Inventory",
       nav,
-      errors: errors.array(),
       classificationList,
-      // pass sticky values back to form
-      inv_make: req.body.inv_make,
-      inv_model: req.body.inv_model,
-      inv_year: req.body.inv_year,
-      inv_description: req.body.inv_description,
-      inv_image: req.body.inv_image,
-      inv_thumbnail: req.body.inv_thumbnail,
-      inv_price: req.body.inv_price,
-      inv_miles: req.body.inv_miles,
-      inv_color: req.body.inv_color,
-      classification_id: req.body.classification_id,
+      errors: errors.array(),
+      inv_make,
+      inv_model,
+      inv_year,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_miles,
+      inv_color,
+      classification_id,
       messages: {
         success: req.flash("success"),
         error: req.flash("error")
-        
       }
     });
   }
 
   try {
+    // Add to database
     await invModel.addInventory(
-      req.body.inv_make, req.body.inv_model, req.body.inv_year, req.body.inv_description,
-      req.body.inv_image || "/images/vehicles/no-image.png",
-      req.body.inv_thumbnail || "/images/vehicles/no-image-tn.png",
-      req.body.inv_price, req.body.inv_miles, req.body.inv_color, req.body.classification_id
+      inv_make,
+      inv_model,
+      inv_year,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_miles,
+      inv_color,
+      classification_id
     );
+
     req.flash("success", "Inventory item added successfully.");
     res.redirect("/inv");
   } catch (error) {
     console.error("Add failed:", error);
     const nav = await utilities.getNav();
-    const classificationList = await utilities.buildClassificationList(req.body.classification_id);
+    const classificationList = await utilities.buildClassificationList(classification_id);
+
     res.status(500).render("inventory/add-inventory", {
       title: "Add Inventory",
       nav,
       errors: [{ msg: "Sorry, the insert failed." }],
       classificationList,
-      // pass sticky values back to form
-      inv_make: req.body.inv_make,
-      inv_model: req.body.inv_model,
-      inv_year: req.body.inv_year,
-      inv_description: req.body.inv_description,
-      inv_image: req.body.inv_image,
-      inv_thumbnail: req.body.inv_thumbnail,
-      inv_price: req.body.inv_price,
-      inv_miles: req.body.inv_miles,
-      inv_color: req.body.inv_color,
-      classification_id: req.body.classification_id,
+      inv_make,
+      inv_model,
+      inv_year,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_miles,
+      inv_color,
+      classification_id,
       messages: {
         success: req.flash("success"),
         error: req.flash("error")
       }
     });
   }
-}
+};
 
+/* ***************************
+ *  Return Inventory by Classification As JSON
+ * ************************** */
+invCont.getInventoryJSON = async (req, res, next) => {
+  const classification_id = parseInt(req.params.classification_id)
+  const invData = await invModel.getInventoryByClassificationId(classification_id)
+  if (invData[0].inv_id) {
+    return res.json(invData)
+  } else {
+    next(new Error("No data returned"))
+  }
+}
 
 
 module.exports = invCont

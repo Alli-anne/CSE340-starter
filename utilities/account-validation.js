@@ -2,10 +2,13 @@ const accountModel = require("../models/account-model")
 const utilities = require(".")
   const { body, validationResult } = require("express-validator")
   const validate = {}
+  const jwt = require("jsonwebtoken")
+  require("dotenv").config()
+
   /*  **********************************
   *  Registration Data Validation Rules
   * ********************************* */
-  validate.registationRules = () => {
+ validate.registrationRules = () => {
     return [
       // firstname is required and must be string
       body("account_firstname")
@@ -72,20 +75,18 @@ validate.checkRegData = async (req, res, next) => {
   }
   next()
 }
-const loginRules = () => {
-  return [
-    body("email")
-      .trim()
+validate.loginRules = () => {
+  return [ 
+    body("account_email")
       .isEmail()
-      .withMessage("A valid email is required."),
-    body("password")
-      .trim()
-      .isLength({ min: 12})
-      .withMessage("Password must be at least 12 characters long."),
-  ];
-};
+      .withMessage("Please enter a valid email address."),
+    body("account_password")
+      .notEmpty()
+      .withMessage("Please enter your password.")
+  ]
+}
 
-const checkLoginData = async (req, res, next) =>{
+validate.checkLoginData = async (req, res, next) =>{
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
       let nav = await utilities.getNav()
@@ -99,6 +100,42 @@ const checkLoginData = async (req, res, next) =>{
     };
     next()
 }
+// utilities.js or wherever your utilities are
+
+validate.checkLogin = async function (req, res, next) {
+  if (req.session.account) {
+    return next(); // user is logged in, continue
+  }
+  // user not logged in, redirect to login page or show error
+  req.flash('notice', 'You must be logged in to view this page.');
+  res.redirect('/account/login');
+}
+/* ****************************************
+* Middleware to check token validity
+**************************************** */
+validate.checkJWTToken = (req, res, next) => {
+  if (req.cookies.jwt) {
+    jwt.verify(
+      req.cookies.jwt,
+      process.env.ACCESS_TOKEN_SECRET,
+      function (err, accountData) {
+        if (err) {
+          req.flash("notice", "Please log in")
+          res.clearCookie("jwt")
+          return res.redirect("/account/login")
+        }
+        res.locals.accountData = accountData
+        res.locals.loggedin = 1
+        next()
+      }
+    )
+  } else {
+    next()
+  }
+}
+
+
+
 
 
 module.exports = validate

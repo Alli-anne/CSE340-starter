@@ -16,6 +16,15 @@ router.get("/", utilities.handleErrors(invController.buildManagement))
 router.get("/addclassification", utilities.handleErrors(invController.addClassification))  // <-- This is line 13?
 router.get("/add-inventory",  utilities.handleErrors(invController.buildAddInventory))
 router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON))
+router.get("/edit/:inv_id", utilities.handleErrors(invController.showEditInventoryView))
+router.get('/delete/:inv_id', invController.showDeleteConfirmation);
+
+router.post('/delete', invController.deleteInventoryItem);
+
+router.post("/update", 
+  utilities.inventoryRules(),   
+  utilities.checkUpdateData, 
+  utilities.handleErrors(invController.updateInventory));
 
 router.post('/addclassification', utilities.handleErrors(invController.addClassificationToDB));
 router.post(

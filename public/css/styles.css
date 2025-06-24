@@ -653,6 +653,257 @@ table#inventoryDisplay {
     margin-top: 20px;
     display: block;
   }
+  /* --- Confirm Deletion View Styles --- */
+.confirmation-container {
+  max-width: 500px;
+  margin: 2rem auto;
+  padding: 2rem 3rem;
+  background-color: #F9F4FF;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(80, 8, 107, 0.3);
+  font-family: "Source Code Pro", monospace;
+  color: #50086B;
+  text-align: center;
+}
+
+.confirmation-container ul {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0 2rem 0;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: white;
+  color: #222;
+}
+
+.confirmation-container ul li {
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid #ddd;
+  font-size: 1.1rem;
+}
+
+.confirmation-container ul li:last-child {
+  border-bottom: none;
+}
+
+.confirmation-container form {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.confirmation-container button,
+.confirmation-container a {
+  padding: 12px 25px;
+  font-family: "Source Code Pro", monospace;
+  font-size: 14px;
+  border-radius: 10px;
+  box-shadow: #595858 0px 0px 3px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+  text-decoration: none;
+  color: white;
+}
+
+.confirmation-container button {
+  background-color: #50086B;
+}
+
+.confirmation-container button:hover {
+  background-color: #6a2290;
+}
+
+.confirmation-container a {
+  background-color: #888;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.confirmation-container a:hover {
+  background-color: #555;
+}
+
+
+/* --- Edit Inventory Item Form Styles --- */
+.edit-inventory-form {
+  max-width: 600px;
+  margin: 2rem auto 3rem auto;
+  background-color: #F9F4FF;
+  padding: 2rem 3rem;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(80, 8, 107, 0.3);
+  font-family: "Source Code Pro", monospace;
+  color: #50086B;
+}
+
+.edit-inventory-form label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  margin-top: 1rem;
+  color: #50086B;
+}
+
+.edit-inventory-form input[type="text"],
+.edit-inventory-form input[type="number"],
+.edit-inventory-form textarea {
+  width: 100%;
+  padding: 10px 15px;
+  font-family: "Source Code Pro", monospace;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  transition: border-color 0.3s ease;
+  resize: vertical;
+}
+
+.edit-inventory-form input[type="text"]:focus,
+.edit-inventory-form input[type="number"]:focus,
+.edit-inventory-form textarea:focus {
+  outline: none;
+  border-color: #6a2290;
+  box-shadow: 0 0 5px #6a2290;
+}
+
+.edit-inventory-form textarea {
+  min-height: 80px;
+}
+
+.edit-inventory-form button {
+  margin-top: 2rem;
+  padding: 12px 30px;
+  background-color: #50086B;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-family: "Source Code Pro", monospace;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: #595858 0px 0px 3px;
+  transition: background-color 0.3s ease;
+  display: block;
+  width: 100%;
+}
+
+.edit-inventory-form button:hover {
+  background-color: #6a2290;
+}
+
+/* Flash messages */
+.flash.error, .flash.success {
+  max-width: 600px;
+  margin: 1rem auto;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: "Source Code Pro", monospace;
+}
+
+.flash.error {
+  background-color: #ffe0e0;
+  color: #a10000;
+  border: 1px solid #a10000;
+}
+
+.flash.success {
+  background-color: #e0ffe0;
+  color: #007a00;
+  border: 1px solid #007a00;
+}
+/* Container styling for the edit form */
+.edit-inventory-container {
+  max-width: 600px;
+  margin: 3rem auto;
+  background-color: #F9F4FF;
+  padding: 2.5rem 3rem;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(80, 8, 107, 0.3);
+  font-family: "Source Code Pro", monospace;
+  color: #50086B;
+}
+
+/* Flash messages */
+.flash.error, .flash.success {
+  max-width: 600px;
+  margin: 1rem auto 2rem auto;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: "Source Code Pro", monospace;
+  text-align: center;
+}
+
+.flash.error {
+  background-color: #ffe0e0;
+  color: #a10000;
+  border: 1px solid #a10000;
+}
+
+.flash.success {
+  background-color: #e0ffe0;
+  color: #007a00;
+  border: 1px solid #007a00;
+}
+
+/* Form styles */
+.edit-inventory-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.edit-inventory-container label {
+  font-weight: 600;
+  margin-top: 1.2rem;
+  margin-bottom: 0.4rem;
+  font-size: 1rem;
+  color: #50086B;
+}
+
+.edit-inventory-container input[type="text"],
+.edit-inventory-container input[type="number"],
+.edit-inventory-container textarea {
+  padding: 10px 15px;
+  font-family: "Source Code Pro", monospace;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  resize: vertical;
+}
+
+.edit-inventory-container input[type="text"]:focus,
+.edit-inventory-container input[type="number"]:focus,
+.edit-inventory-container textarea:focus {
+  outline: none;
+  border-color: #6a2290;
+  box-shadow: 0 0 5px #6a2290;
+}
+
+.edit-inventory-container textarea {
+  min-height: 100px;
+}
+
+.edit-inventory-container button[type="submit"] {
+  margin-top: 2.5rem;
+  padding: 14px 30px;
+  background-color: #50086B;
+  color: white;
+  font-family: "Source Code Pro", monospace;
+  font-size: 16px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: #595858 0px 0px 3px;
+  transition: background-color 0.3s ease;
+}
+
+.edit-inventory-container button[type="submit"]:hover {
+  background-color: #6a2290;
+}
+
 
 
 @media screen and (min-width: 600px) { 

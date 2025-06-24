@@ -204,7 +204,46 @@ Util.checkJWTToken = (req, res, next) => {
   }
 };
 
+Util.checkUpdateData = async function(req, res, next) {
+  const {
+    inv_make,
+    inv_model,
+    inv_year,
+    inv_description,
+    inv_image,
+    inv_thumbnail,
+    inv_price,
+    inv_miles,
+    inv_color,
+    classification_id
+  } = req.body
 
+  let errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    const nav = await Util.getNav()
+    const classificationList = await Util.buildClassificationList(classification_id)
+
+    res.status(400).render("inventory/edit-inventory", {
+      errors: errors.array(),
+      title: "Edit Inventory",
+      nav,
+      inv_make,
+      inv_model,
+      inv_year,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_miles,
+      inv_color,
+      classificationList,
+      classification_id
+    })
+    return
+  }
+
+  next()
+}
 
 module.exports = {
   handleErrors,
@@ -212,9 +251,9 @@ module.exports = {
   buildClassificationList: Util.buildClassificationList,
   buildClassificationGrid: Util.buildClassificationGrid,
   buildCarDetail: Util.buildCarDetail,
-  inventoryRules: Util.inventoryRules,    // <-- add `Util.` here
+  inventoryRules: Util.inventoryRules,
   inventoryValidation: Util.inventoryValidation,
   checkLogin: Util.checkLogin,
-  checkJWTToken: Util.checkJWTToken
+  checkJWTToken: Util.checkJWTToken,
+  checkUpdateData: Util.checkUpdateData, 
 };
-

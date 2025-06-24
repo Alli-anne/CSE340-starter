@@ -1,0 +1,14 @@
+<div class="confirmation-container">
+  <h1>Confirm Deletion</h1>
+  <p>Are you sure you want to delete the following item?</p>
+  <ul>
+    <li><strong>Make:</strong> <%= item.inv_make %></li>
+    <li><strong>Model:</strong> <%= item.inv_model %></li>
+    <li><strong>Year:</strong> <%= item.inv_year %></li>
+  </ul>
+  <form method="POST" action="/inv/delete">
+    <input type="hidden" name="inv_id" value="<%= item.inv_id %>" />
+    <button type="submit">Yes, Delete</button>
+    <a href="/inv">Cancel</a>
+  </form>
+</div>

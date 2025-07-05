@@ -1,12 +1,12 @@
- <h1><%= title %></h1>
- 
- <% if (messages && messages.length > 0) { %>
-    <div class="messages">
-      <% messages.forEach(function(message) { %>
-        <p><%= message %></p>
-      <% }) %>
-    </div>
-  <% } %>
+<h1><%= title %></h1>
+
+<% if (messages && messages.length > 0) { %>
+  <div class="messages">
+    <% messages.forEach(function(message) { %>
+      <p><%= message %></p>
+    <% }) %>
+  </div>
+<% } %>
 
 <form id="updateAccountForm" action="/account/update" method="post">
   <input type="hidden" id="account_id" name="account_id" value="<%= accountId %>">
@@ -18,27 +18,27 @@
   <input type="text" id="account_lastname" name="account_lastname" value="<%= account_lastname || '' %>" required>
 
   <label for="account_email">Email</label>
-  <input type="text" id="account_email" name="account_email" value="<%= account_email || '' %>" required>
+  <input type="email" id="account_email" name="account_email" value="<%= account_email || '' %>" required>
 
   <button id="updateAccountBtn" type="submit">Update Account</button>
 </form>
 
-  <div class="edit-inventory-form">
+<div class="edit-inventory-form">
   <h2>Change Password</h2>
   <form action="/account/update-password" method="post">
-  <label for="account_password">New Password</label>
-  <input
-    type="password"
-    id="account_password"
-    name="account_password"
-    required
-    minlength="12"
-    pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#\$%\^&\*]).{12,}$"
-  >
-  <small>Password must be at least 12 characters and include uppercase, lowercase, a number, and a special character.</small>
+    <label for="account_password">New Password</label>
+    <input
+      type="password"
+      id="account_password"
+      name="account_password"
+      required
+      minlength="12"
+      pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#\\$%\\^&\\*]).{12,}$"
+    >
+    <small>Password must be at least 12 characters and include uppercase, lowercase, a number, and a special character.</small>
 
-  <input type="hidden" name="account_id" value="<%= accountId %>">
+    <input type="hidden" name="account_id" value="<%= accountId %>">
 
-  <button type="submit">Change Password</button>
-</form>
+    <button type="submit">Change Password</button>
+  </form>
 </div>

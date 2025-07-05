@@ -134,6 +134,32 @@ validate.checkJWTToken = (req, res, next) => {
   }
 }
 
+validate.accountUpdateRules = () => {
+  return [
+    body("account_firstname")
+      .trim()
+      .escape()
+      .notEmpty()
+      .withMessage("Please provide a first name."),
+    body("account_lastname")
+      .trim()
+      .escape()
+      .notEmpty()
+      .withMessage("Please provide a last name."),
+    body("account_email")
+      .trim()
+      .isEmail()
+      .normalizeEmail()
+      .withMessage("Please enter a valid email address.")
+      .custom(async (account_email, { req }) => {
+        const existing = await accountModel.getAccountByEmail(account_email)
+        if (existing && existing.account_id != res.locals.accountData.account_id) {
+          throw new Error("That email is already in use.")
+        }
+      }),
+  ]
+}
+
 
 
 

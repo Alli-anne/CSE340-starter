@@ -7,6 +7,10 @@ const utilities = require('../utilities');
 
 router.get("/login", utilities.handleErrors(accountController.buildLogin));
 router.get("/register", utilities.handleErrors(accountController.buildRegister))
+router.get("/update/:accountId", utilities.checkLogin,accountController.showUpdateForm);
+router.get("/logout", utilities.handleErrors(accountController.accountLogout));
+
+
 router.get("/", 
   utilities.checkLogin,              
   utilities.handleErrors(accountController.buildAccountManagement));
@@ -27,6 +31,12 @@ router.post(
   regValidate.checkLoginData,
   utilities.handleErrors(accountController.accountLogin)
 );
+router.post('/update', accountController.updateAccount);
+router.post(
+  "/update-password",
+  utilities.checkLogin, // ensure logged in
+  utilities.handleErrors(accountController.updatePassword) // wrap with error handler
+)
 
 
 module.exports = router

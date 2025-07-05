@@ -181,6 +181,14 @@ Util.checkLogin = (req, res, next) => {
     return res.redirect("/account/login"); // Redirect to login
   }
 };
+Util.adminCheck = (req, res, next) => {
+  if (res.locals.accountData.account_type === "Admin" || res.locals.accountData.account_type === "Employee") {
+    next(); // User is logged in, continue
+  } else {
+    req.flash("notice", "You must be logged in as an admin to view this page."); // Create flash message
+    return res.redirect("/account/login"); // Redirect to login
+  }
+}
 Util.checkJWTToken = (req, res, next) => {
   const token = req.cookies.jwt;
   if (token) {
@@ -256,4 +264,5 @@ module.exports = {
   checkLogin: Util.checkLogin,
   checkJWTToken: Util.checkJWTToken,
   checkUpdateData: Util.checkUpdateData, 
+  adminCheck: Util.adminCheck
 };

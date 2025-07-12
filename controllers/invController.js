@@ -1,6 +1,7 @@
 const invModel = require("../models/inventory-model")
 const utilities = require("../utilities/")
 const invCont = {}
+const reviewModel = require("../models/review-model") 
 
 /* ************************
  * Utility functions (formerly in Util)
@@ -36,6 +37,7 @@ invCont.buildClassificationGrid = async function(data){
       + '" title="View ' + vehicle.inv_make + ' '+ vehicle.inv_model 
       + ' details"><img src="' + vehicle.inv_thumbnail 
       +'" alt="Image of '+ vehicle.inv_make +' "/></a>'
+      
       grid += '<div class="namePrice">'
       grid += '<hr />'
       grid += '<h2>'
@@ -43,6 +45,26 @@ invCont.buildClassificationGrid = async function(data){
       + vehicle.inv_make + ' ' + vehicle.inv_model + ' details">' 
       + vehicle.inv_make + ' ' + vehicle.inv_model + '</a>'
       grid += '</h2>'
+
+      // Add star ratings here
+      const fullStars = Math.floor(vehicle.averageRating || 0);
+      const halfStar = (vehicle.averageRating - fullStars) >= 0.5 ? 1 : 0;
+      const emptyStars = 5 - fullStars - halfStar;
+
+      // Build stars html (using ★ for filled, ☆ for empty, and optionally a half star)
+      let starsHtml = '<div class="star-rating">';
+      for (let i = 0; i < fullStars; i++) {
+        starsHtml += '★';
+      }
+      if (halfStar) starsHtml += '½';  // or use a half star icon
+      for (let i = 0; i < emptyStars; i++) {
+        starsHtml += '☆';
+      }
+      starsHtml += ` <span>(${vehicle.reviewCount || 0})</span>`; // show count of reviews next to stars
+      starsHtml += '</div>';
+
+      grid += starsHtml;
+
       grid += '<span>$' 
       + new Intl.NumberFormat('en-US').format(vehicle.inv_price) + '</span>'
       grid += '</div>'
@@ -55,6 +77,29 @@ invCont.buildClassificationGrid = async function(data){
   return grid
 }
 
+
+invCont.buildClassificationGrid = async function(data) {
+  let grid = '<ul id="inv-display">'
+
+  for (const vehicle of data) {
+    const avgResult = await reviewModel.averageReviews(vehicle.inv_id)
+    const avgRating = avgResult?.avg ? Number(avgResult.avg).toFixed(1) : "No ratings"
+
+    grid += '<li>'
+    grid += `<a href="../../inv/detail/${vehicle.inv_id}" title="View ${vehicle.inv_make} ${vehicle.inv_model} details">`
+    grid += `<img src="${vehicle.inv_thumbnail}" alt="Image of ${vehicle.inv_make}" /></a>`
+
+    grid += `<div class="namePrice"><hr />`
+    grid += `<h2><a href="../../inv/detail/${vehicle.inv_id}" title="View ${vehicle.inv_make} ${vehicle.inv_model} details">`
+    grid += `${vehicle.inv_make} ${vehicle.inv_model}</a></h2>`
+    grid += `<span>$${new Intl.NumberFormat("en-US").format(vehicle.inv_price)}</span>`
+    grid += `<p>Avg Rating: ${avgRating}</p>`
+    grid += `</div></li>`
+  }
+
+  grid += "</ul>"
+  return grid
+}
 invCont.buildCarDetail = function(car) {
   let detailHTML = ''
 
@@ -82,6 +127,8 @@ invCont.buildCarDetail = function(car) {
   return detailHTML
 }
 
+
+
 /* ***************************
  *  Build inventory by classification view
  * ************************** */
@@ -90,12 +137,15 @@ invCont.buildByClassificationId = async function (req, res, next) {
     const classification_id = req.params.classificationId
     const data = await invModel.getInventoryByClassificationId(classification_id)
     const grid = await invCont.buildClassificationGrid(data)
+
+    
     let nav = await invCont.getNav()
     const className = data[0].classification_name
     res.render("./inventory/classification", {
       title: className + " vehicles",
       nav,
       grid,
+
     })
   } catch (error) {
     next(error)
@@ -107,6 +157,16 @@ invCont.showCarDetails = async function (req, res, next) {
     const carId = req.params.carId
     const car = await invModel.getCarById(carId)
     const nav = await invCont.getNav()
+
+    // ✅ Use carId here
+    const reviews = await reviewModel.getReviewsByVehicleId(carId)
+    const averageRatingData = await reviewModel.averageReviews(carId)
+    const reviewCount = await reviewModel.averageReviews(carId)
+
+    const averageRating =
+      averageRatingData?.avg != null
+        ? Number(averageRatingData.avg).toFixed(1)
+        : null
 
     if (!car) {
       return next({
@@ -121,11 +181,15 @@ invCont.showCarDetails = async function (req, res, next) {
       title: `${car.inv_make} ${car.inv_model}`,
       nav,
       detailHTML,
+      reviews,
+      averageRating,
+      reviewCount // ✅ Don't forget to pass this to EJS too
     })
   } catch (err) {
     next(err)
   }
 }
+
 invCont.buildManagement = async (req, res, next) => {
   try {
     const nav = await invCont.getNav() 
@@ -510,6 +574,25 @@ invCont.deleteInventoryItem = async function (req, res, next) {
       res.redirect(`/inv/delete/${invId}`);
     }
   } catch (error) {
+    next(error);
+  }
+};
+invCont.submitReview = async function(req, res, next) {
+  try {
+    const inv_id = req.params.carId; // assuming your route is like /inv/detail/:carId
+    const { rating, comment } = req.body;
+    const account_id = req.session.account_id; // adjust to your session setup
+
+    if (!account_id) {
+      // maybe redirect to login or show error
+      return res.status(401).send("Please log in to submit a review.");
+    }
+
+    await reviewModel.addReview(account_id, inv_id, rating, comment);
+
+    res.redirect(`/inv/detail/${inv_id}`);
+  } catch (error) {
+    console.error("Error submitting review:", error);
     next(error);
   }
 };

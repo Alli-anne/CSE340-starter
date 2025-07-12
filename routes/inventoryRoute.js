@@ -6,6 +6,7 @@ const utilities = require("../utilities");
 const { inventoryRules, inventoryValidation, handleErrors, checkLogin, adminCheck} = utilities;
 const regValidate = require('../utilities/index');
 
+
 // ==== Public Routes (No Login Needed) ====
 router.get("/type/:classificationId", 
   utilities.handleErrors(invController.buildByClassificationId));

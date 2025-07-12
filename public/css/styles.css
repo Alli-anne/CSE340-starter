@@ -1001,7 +1001,10 @@ table#inventoryDisplay {
   margin-left: 2rem;
   margin-right: 2rem;
 }
-
+.rating span {
+  color: gold;
+  font-size: 1.2rem;
+}
 @media screen and (min-width: 600px) { 
   .info-grid{
   display:grid;

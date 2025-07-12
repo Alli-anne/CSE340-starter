@@ -3,4 +3,23 @@
   <p>No vehicle details available.</p>
 <% } %>
 
+
 <%- detailHTML %>
+<h2>Average Rating: <%= averageRating %></h2>
+
+<% if (reviews && reviews.length > 0) { %>
+  <h2>Reviews</h2>
+  <ul>
+    <% reviews.forEach(review => { %>
+      <li>
+        <strong>Rating:</strong> <%= review.rating %> <br>
+        <strong>Comment:</strong> <%= review.comment %> <br>
+        <small><%= new Date(review.review_date).toLocaleDateString() %></small>
+      </li>
+    <% }) %>
+  </ul>
+<% } else { %>
+  <p>No reviews yet.</p>
+<% } %>
+
+

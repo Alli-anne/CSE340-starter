@@ -1005,6 +1005,146 @@ table#inventoryDisplay {
   color: gold;
   font-size: 1.2rem;
 }
+#vehicle-details {
+  margin-bottom: 1.5rem;
+  font-family: "Source Code Pro", monospace;
+}
+
+/* No vehicle message */
+#no-vehicle-msg {
+  font-style: italic;
+  color: #666;
+}
+
+/* Average rating heading */
+#average-rating {
+  font-family: "Source Code Pro", monospace;
+  margin-top: 2rem;
+  color: #50086B;
+}
+
+/* Reviews section */
+#reviews-heading {
+  font-family: "Source Code Pro", monospace;
+  margin-top: 2rem;
+  color: #50086B;
+}
+
+/* Reviews list */
+#reviews-list {
+  list-style-type: disc;
+  padding-left: 20px;
+  margin-bottom: 2rem;
+  font-family: "Source Code Pro", monospace;
+  font-size: 14px;
+  max-width: 600px;
+}
+
+/* Each review item */
+.review-item {
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 0.5rem;
+}
+
+/* Review date styling */
+.review-date {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+/* No reviews message */
+#no-reviews-msg {
+  font-style: italic;
+  color: #666;
+  margin-top: 1rem;
+}
+
+/* Review form styling */
+#add-review-form {
+  max-width: 600px;
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background-color: #F9F4FF;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(80, 8, 107, 0.3);
+  font-family: "Source Code Pro", monospace;
+}
+
+/* Labels */
+#add-review-form label {
+  display: block;
+  font-weight: 600;
+  margin-top: 1rem;
+  margin-bottom: 0.3rem;
+  color: #50086B;
+}
+
+/* Inputs and textarea */
+#add-review-form input[type="number"],
+#add-review-form textarea {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-family: "Source Code Pro", monospace;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+/* Focus state */
+#add-review-form input[type="number"]:focus,
+#add-review-form textarea:focus {
+  outline: none;
+  border-color: #6a2290;
+  box-shadow: 0 0 5px #6a2290;
+}
+
+/* Submit button */
+#submit-review-btn {
+  margin-top: 1.5rem;
+  padding: 12px 25px;
+  background-color: #50086B;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-family: "Source Code Pro", monospace;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: #595858 0px 0px 3px;
+  transition: background-color 0.3s ease;
+}
+
+#submit-review-btn:hover {
+  background-color: #6a2290;
+}
+
+/* Error messages */
+.error-message {
+  color: #a10000;
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+/* Login prompt */
+#login-prompt {
+  margin-top: 1rem;
+  font-family: "Source Code Pro", monospace;
+}
+
+#login-prompt a {
+  color: #50086B;
+  text-decoration: none;
+}
+
+#login-prompt a:hover {
+  text-decoration: underline;
+}
+.info-flex{
+  display: flex;
+  justify-content: center;
+}
 @media screen and (min-width: 600px) { 
   .info-grid{
   display:grid;
@@ -1120,6 +1260,7 @@ table#inventoryDisplay {
   margin-right: auto;
 
 }
+
 
 }
 @media screen and (min-width: 1000px){

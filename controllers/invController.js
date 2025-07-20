@@ -27,79 +27,67 @@ invCont.getNav = async function (req, res, next) {
   return list
 }
 
-invCont.buildClassificationGrid = async function(data){
+
+invCont.buildClassificationGrid = async function(data) {
   let grid
-  if(data.length > 0){
+  if (data.length > 0) {
     grid = '<ul id="inv-display">'
-    data.forEach(vehicle => { 
+
+    // Use for..of so you can await inside loop
+    for (const vehicle of data) {
+      // Fetch average rating and review count
+      const avgResult = await reviewModel.averageReviews(vehicle.inv_id)
+      const avgRating = avgResult?.avg ? Number(avgResult.avg) : 0
+      const reviewCount = avgResult?.count || 0  // if your model returns count, else vehicle.reviewCount or 0
+
+      // Calculate stars
+      const fullStars = Math.floor(avgRating)
+      const halfStar = (avgRating - fullStars) >= 0.5 ? 1 : 0
+      const emptyStars = 5 - fullStars - halfStar
+
+      // Build stars html
+      let starsHtml = '<div class="star-rating">'
+      for (let i = 0; i < fullStars; i++) {
+        starsHtml += '★'
+      }
+      if (halfStar) starsHtml += '½' // or use half star icon/html
+      for (let i = 0; i < emptyStars; i++) {
+        starsHtml += '☆'
+      }
+      starsHtml += ` <span>(${reviewCount})</span>`
+      starsHtml += '</div>'
+
       grid += '<li>'
-      grid +=  '<a href="../../inv/detail/'+ vehicle.inv_id 
-      + '" title="View ' + vehicle.inv_make + ' '+ vehicle.inv_model 
-      + ' details"><img src="' + vehicle.inv_thumbnail 
-      +'" alt="Image of '+ vehicle.inv_make +' "/></a>'
-      
+      grid += '<a href="../../inv/detail/' + vehicle.inv_id + '" title="View ' + vehicle.inv_make + ' ' + vehicle.inv_model + ' details">'
+      grid += '<img src="' + vehicle.inv_thumbnail + '" alt="Image of ' + vehicle.inv_make + ' "/></a>'
+
       grid += '<div class="namePrice">'
       grid += '<hr />'
       grid += '<h2>'
-      grid += '<a href="../../inv/detail/' + vehicle.inv_id +'" title="View ' 
-      + vehicle.inv_make + ' ' + vehicle.inv_model + ' details">' 
-      + vehicle.inv_make + ' ' + vehicle.inv_model + '</a>'
+      grid += '<a href="../../inv/detail/' + vehicle.inv_id + '" title="View ' + vehicle.inv_make + ' ' + vehicle.inv_model + ' details">'
+      grid += vehicle.inv_make + ' ' + vehicle.inv_model + '</a>'
       grid += '</h2>'
 
-      // Add star ratings here
-      const fullStars = Math.floor(vehicle.averageRating || 0);
-      const halfStar = (vehicle.averageRating - fullStars) >= 0.5 ? 1 : 0;
-      const emptyStars = 5 - fullStars - halfStar;
+      grid += starsHtml
 
-      // Build stars html (using ★ for filled, ☆ for empty, and optionally a half star)
-      let starsHtml = '<div class="star-rating">';
-      for (let i = 0; i < fullStars; i++) {
-        starsHtml += '★';
-      }
-      if (halfStar) starsHtml += '½';  // or use a half star icon
-      for (let i = 0; i < emptyStars; i++) {
-        starsHtml += '☆';
-      }
-      starsHtml += ` <span>(${vehicle.reviewCount || 0})</span>`; // show count of reviews next to stars
-      starsHtml += '</div>';
-
-      grid += starsHtml;
-
-      grid += '<span>$' 
-      + new Intl.NumberFormat('en-US').format(vehicle.inv_price) + '</span>'
+      grid += '<span>$' + new Intl.NumberFormat('en-US').format(vehicle.inv_price) + '</span>'
       grid += '</div>'
       grid += '</li>'
-    })
+    }
+
     grid += '</ul>'
-  } else { 
+  } else {
     grid = '<p class="notice">Sorry, no matching vehicles could be found.</p>'
   }
   return grid
 }
 
 
-invCont.buildClassificationGrid = async function(data) {
-  let grid = '<ul id="inv-display">'
 
-  for (const vehicle of data) {
-    const avgResult = await reviewModel.averageReviews(vehicle.inv_id)
-    const avgRating = avgResult?.avg ? Number(avgResult.avg).toFixed(1) : "No ratings"
 
-    grid += '<li>'
-    grid += `<a href="../../inv/detail/${vehicle.inv_id}" title="View ${vehicle.inv_make} ${vehicle.inv_model} details">`
-    grid += `<img src="${vehicle.inv_thumbnail}" alt="Image of ${vehicle.inv_make}" /></a>`
 
-    grid += `<div class="namePrice"><hr />`
-    grid += `<h2><a href="../../inv/detail/${vehicle.inv_id}" title="View ${vehicle.inv_make} ${vehicle.inv_model} details">`
-    grid += `${vehicle.inv_make} ${vehicle.inv_model}</a></h2>`
-    grid += `<span>$${new Intl.NumberFormat("en-US").format(vehicle.inv_price)}</span>`
-    grid += `<p>Avg Rating: ${avgRating}</p>`
-    grid += `</div></li>`
-  }
+// ✅ UPDATE THE ORIGINAL buildStarsHTML to use the new method
 
-  grid += "</ul>"
-  return grid
-}
 invCont.buildCarDetail = function(car) {
   let detailHTML = ''
 
@@ -132,6 +120,28 @@ invCont.buildCarDetail = function(car) {
 /* ***************************
  *  Build inventory by classification view
  * ************************** */
+invCont.buildByVehicleId = async function (req, res, next) {
+  try {
+    const vehicleId = req.params.vehicleId;
+    const data = await invModel.getVehicleById(vehicleId);
+    const nav = await invCont.getNav();
+    const reviews = await reviewModel.getReviewsByVehicleId(vehicleId);
+    const averageRatingData = await reviewModel.averageReviews(vehicleId);
+     console.log("Average rating:", avg);
+
+    res.render("./inventory/detail", {
+      title: data.inv_make + " " + data.inv_model,
+      nav,
+      data,
+      reviews,
+      averageRatingData,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+
 invCont.buildByClassificationId = async function (req, res, next) {
   try {
     const classification_id = req.params.classificationId
@@ -151,7 +161,6 @@ invCont.buildByClassificationId = async function (req, res, next) {
     next(error)
   }
 }
-
 invCont.showCarDetails = async function (req, res, next) {
   try {
     const carId = req.params.carId
@@ -183,7 +192,10 @@ invCont.showCarDetails = async function (req, res, next) {
       detailHTML,
       reviews,
       averageRating,
-      reviewCount // ✅ Don't forget to pass this to EJS too
+      reviewCount,
+      car, // ✅ Don't forget to pass this to EJS too
+      account_id: req.session.account_id,
+
     })
   } catch (err) {
     next(err)
@@ -577,25 +589,55 @@ invCont.deleteInventoryItem = async function (req, res, next) {
     next(error);
   }
 };
-invCont.submitReview = async function(req, res, next) {
+async function addReview({ inv_id, account_id, rating, comment }) {
+  const sql = `
+    INSERT INTO review (inv_id, account_id, rating, comment)
+    VALUES ($1, $2, $3, $4)
+    RETURNING *;
+  `;
+  const params = [inv_id, account_id, rating, comment];
+  const result = await pool.query(sql, params);
+  return result.rows[0];
+}
+invCont.submitReview = async function (req, res, next) {
   try {
-    const inv_id = req.params.carId; // assuming your route is like /inv/detail/:carId
+    const inv_id = req.params.carId;
     const { rating, comment } = req.body;
-    const account_id = req.session.account_id; // adjust to your session setup
+    const account_id = req.session?.account_id || res.locals.accountData?.account_id;
 
     if (!account_id) {
-      // maybe redirect to login or show error
-      return res.status(401).send("Please log in to submit a review.");
+      req.flash('error', 'You must be logged in to submit a review.');
+      return res.redirect('/account/login');
     }
 
-    await reviewModel.addReview(account_id, inv_id, rating, comment);
+    if (
+      !inv_id ||
+      !rating ||
+      !comment ||
+      isNaN(rating) ||
+      rating < 1 ||
+      rating > 5 ||
+      typeof comment !== 'string' ||
+      comment.trim().length === 0
+    ) {
+      req.flash('error', 'All fields are required, and rating must be between 1 and 5.');
+      return res.redirect(`/inv/detail/${inv_id}`);
+    }
 
+    await reviewModel.addReview({ inv_id, account_id, rating, comment: comment.trim() });
+
+    req.flash('success', 'Review submitted successfully!');
     res.redirect(`/inv/detail/${inv_id}`);
   } catch (error) {
-    console.error("Error submitting review:", error);
     next(error);
   }
 };
+
+
+
+
+
+
 
 
 module.exports = invCont;

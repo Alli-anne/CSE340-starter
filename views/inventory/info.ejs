@@ -5,21 +5,46 @@
 
 
 <%- detailHTML %>
-<h2>Average Rating: <%= averageRating %></h2>
+<% if (messages.error) { %>
+  <p id="messageError" class="message error"><%= messages.error %></p>
+<% } %>
+<% if (messages.success) { %>
+  <p id="messageSuccess" class="message success"><%= messages.success %></p>
+<% } %>
 
+<h2 id="average-rating">Average Rating: <%= averageRating %></h2>
+<div class="info-flex">
 <% if (reviews && reviews.length > 0) { %>
-  <h2>Reviews</h2>
-  <ul>
+  <h2 id="reviews-heading">Reviews</h2>
+  <ul id="reviews-list">
     <% reviews.forEach(review => { %>
-      <li>
-        <strong>Rating:</strong> <%= review.rating %> <br>
-        <strong>Comment:</strong> <%= review.comment %> <br>
-        <small><%= new Date(review.review_date).toLocaleDateString() %></small>
+      <li class="review-item">
+        <strong>Rating:</strong> <span class="review-rating"><%= review.rating %></span><br>
+        <strong>Comment:</strong> <span class="review-comment"><%= review.comment %></span><br>
+        <small class="review-date"><%= new Date(review.review_date).toLocaleDateString() %></small>
       </li>
     <% }) %>
   </ul>
 <% } else { %>
-  <p>No reviews yet.</p>
+  <p id="no-reviews-msg">No reviews yet.</p>
 <% } %>
 
+<!-- Show the form if logged in -->
+<% if (locals.accountData) { %>
+  <form id="add-review-form" action="/inv/add-review/<%= car.inv_id %>" method="POST" novalidate>
+    <input type="hidden" name="inv_id" value="<%= car.inv_id %>">
 
+    <label for="rating">Rating:</label>
+    <input type="number" id="rating" name="rating" min="1" max="5" required>
+    <span id="rating-error" class="error-message"></span>
+
+    <label for="comment">Comment:</label>
+    <textarea id="comment" name="comment" required></textarea>
+    <span id="comment-error" class="error-message"></span>
+
+    <button id="submit-review-btn" type="submit">Add Review</button>
+  </form>
+<% } else { %>
+  <p id="login-prompt"><a href="/account/login">Log in</a> to leave a review.</p>
+<% } %>
+</div>

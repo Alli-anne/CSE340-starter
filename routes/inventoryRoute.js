@@ -65,6 +65,8 @@ router.post(
   utilities.inventoryValidation,        
   utilities.handleErrors(invController.addInventoryToDB)
 );
+router.post("/add-review/:carId", utilities.handleErrors(invController.submitReview));
+
 
 
 
